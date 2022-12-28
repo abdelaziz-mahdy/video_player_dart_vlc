@@ -13,6 +13,7 @@ dependencies:
   dart_vlc: ^0.4.0
   video_player_platform_interface: ^6.0.1
   stream_transform: ^2.1.0
+  universal_platform: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
