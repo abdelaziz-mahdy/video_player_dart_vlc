@@ -15,6 +15,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
     VideoPlayerPlatform.instance = VideoPlayerDartVlc();
+    return DartVLC.initialize();
   }
 
   @override
@@ -83,7 +84,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
 
   @override
   Future<void> init() async {
-    return DartVLC.initialize();
+    
   }
 
   @override
