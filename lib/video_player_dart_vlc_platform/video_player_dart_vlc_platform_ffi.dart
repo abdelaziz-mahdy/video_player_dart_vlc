@@ -2,10 +2,8 @@
 
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
-
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:stream_transform/stream_transform.dart';
 
