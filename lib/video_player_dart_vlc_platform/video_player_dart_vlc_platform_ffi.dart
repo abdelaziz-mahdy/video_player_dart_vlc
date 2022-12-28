@@ -25,8 +25,9 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
 
   @override
   Future<int?> create(DataSource dataSource) async {
+
     Random random = Random();
-    int randomNumber = random.nextInt(1000);
+    int randomNumber = random.nextInt(10000);
     String refer = "";
     if (dataSource.sourceType == DataSourceType.network) {
       refer = dataSource.httpHeaders["Referer"] ?? "";
@@ -45,6 +46,8 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
       ],
       //registerTexture: !Platform.isWindows
     ); // create a new video controller
+
+ 
     if (dataSource.sourceType == DataSourceType.asset) {
       player.open(
         Media.asset(dataSource.asset!),
@@ -70,16 +73,9 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         ),
       );
     }
-    Completer waitingForTextureId = Completer();
-    player.textureId.addListener(() {
-      if(player.textureId.value!=null){
-      players[player.textureId.value!] = player;
 
-      waitingForTextureId.complete();
-      }
-    });
-    await waitingForTextureId.future;
-    return player.textureId.value!;
+
+    return player.id;
   }
 
   @override

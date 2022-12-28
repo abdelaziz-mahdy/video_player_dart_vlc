@@ -1,3 +1,5 @@
+## 0.0.4
+* converted to player id
 ## 0.0.3
 * wait for texture id
 ## 0.0.2
