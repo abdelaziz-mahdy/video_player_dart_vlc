@@ -167,9 +167,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
     throw UnimplementedError();
   }
 
+    /// Sets the audio mode to mix with other sources (ignored)
   @override
-  Future<void> setMixWithOthers(bool mixWithOthers) {
-    // TODO: implement setMixWithOthers
-    throw UnimplementedError();
-  }
+  Future<void> setMixWithOthers(bool mixWithOthers) => Future<void>.value();
 }
