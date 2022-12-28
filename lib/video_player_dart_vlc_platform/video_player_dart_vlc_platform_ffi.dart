@@ -1,5 +1,4 @@
-
-
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:dart_vlc/dart_vlc.dart';
@@ -71,7 +70,13 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         ),
       );
     }
-    players[player.textureId.value!] = player;
+    Completer waitingForTextureId = Completer();
+    player.textureId.addListener(() {
+      players[player.textureId.value!] = player;
+
+      waitingForTextureId.complete();
+    });
+    await waitingForTextureId.future;
     return player.textureId.value!;
   }
 
@@ -81,9 +86,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
   }
 
   @override
-  Future<void> init() async {
-    
-  }
+  Future<void> init() async {}
 
   @override
   Future<void> pause(int textureId) async {
@@ -128,8 +131,8 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         );
       }
       return VideoEvent(
-          eventType: VideoEventType.unknown,
-        );
+        eventType: VideoEventType.unknown,
+      );
     });
     Stream<VideoEvent> initialized =
         players[textureId]!.videoDimensionsStream.map((event) {
@@ -167,7 +170,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
     throw UnimplementedError();
   }
 
-    /// Sets the audio mode to mix with other sources (ignored)
+  /// Sets the audio mode to mix with other sources (ignored)
   @override
   Future<void> setMixWithOthers(bool mixWithOthers) => Future<void>.value();
 }
