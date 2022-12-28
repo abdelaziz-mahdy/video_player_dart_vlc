@@ -1,7 +1,6 @@
 # video_player_dart_vlc
 
-package was made to allow for people to use video_player with windows and linux using dart_vlc
-
+platform interface for video player using dart_vlc to work on windows and linux
 
 
 # to use add this in the main of your app
