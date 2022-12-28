@@ -1,6 +1,6 @@
 name: video_player_dart_vlc
 description: platform interface for video player using dart_vlc
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/zezo357/video_player_dart_vlc
 
 environment:
