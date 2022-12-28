@@ -72,9 +72,11 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
     }
     Completer waitingForTextureId = Completer();
     player.textureId.addListener(() {
+      if(player.textureId.value!=null){
       players[player.textureId.value!] = player;
 
       waitingForTextureId.complete();
+      }
     });
     await waitingForTextureId.future;
     return player.textureId.value!;
