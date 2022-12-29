@@ -4,7 +4,7 @@ version: 0.0.4
 homepage: https://github.com/zezo357/video_player_dart_vlc
 
 environment:
-  sdk: '>=2.18.6 <3.0.0'
+  sdk: '>=2.18.5 <3.0.0'
   flutter: ">=1.20.0"
 
 dependencies:

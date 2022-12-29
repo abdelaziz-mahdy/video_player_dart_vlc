@@ -8,6 +8,7 @@ import 'package:stream_transform/stream_transform.dart';
 
 class VideoPlayerDartVlc extends VideoPlayerPlatform {
   Map<int, Player> players = {};
+  int counter=0;
 
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
@@ -26,8 +27,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
   @override
   Future<int?> create(DataSource dataSource) async {
 
-    Random random = Random();
-    int randomNumber = random.nextInt(10000);
+    counter++;
     String refer = "";
     if (dataSource.sourceType == DataSourceType.network) {
       refer = dataSource.httpHeaders["Referer"] ?? "";
@@ -35,7 +35,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
     //print('--http-referrer=' + refer);
 
     Player player = Player(
-      id: randomNumber,
+      id: counter,
       commandlineArguments: [
         //"-vvv",
         '--http-referrer=' + refer,
@@ -74,7 +74,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
       );
     }
 
-
+    players[player.id]=player;
     return player.id;
   }
 
