@@ -17,20 +17,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Install Flutter
-        # You may pin to the exact commit or the version.
-        # uses: britannio/action-install-flutter@a486b7e3148e54a76390d849100b9dee819ff810
-        uses: britannio/action-install-flutter@v1.1
-
-      - name: Install dependencies
-        run: flutter pub get
-
-        
       - name: Publish
         uses: sakebook/actions-flutter-pub-publisher@v1.4.1
         with:
-          credential: ${{ secrets.CREDENTIAL_JSON }}
+          credential: ${{ CREDENTIAL_JSON.CREDENTIAL_JSON }}
           flutter_package: true
           skip_test: true
           dry_run: true
