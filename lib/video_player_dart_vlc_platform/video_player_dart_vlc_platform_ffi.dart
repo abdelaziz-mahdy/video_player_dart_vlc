@@ -8,25 +8,30 @@ import 'package:stream_transform/stream_transform.dart';
 
 class VideoPlayerDartVlc extends VideoPlayerPlatform {
   Map<int, Player> players = {};
-  int counter=0;
+  //workaround to know if the player is initialized
+  Map<int, int> durations = {};
+  int counter = 0;
 
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
     VideoPlayerPlatform.instance = VideoPlayerDartVlc();
-    return DartVLC.initialize();
+    return;
   }
 
   @override
   Widget buildView(int textureId) {
     return Video(
       player: players[textureId],
+
+      height: 1920.0,
+      width: 1080.0,
+      scale: 1.0, // default
       showControls: false,
     );
   }
 
   @override
   Future<int?> create(DataSource dataSource) async {
-
     counter++;
     String refer = "";
     if (dataSource.sourceType == DataSourceType.network) {
@@ -47,7 +52,6 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
       //registerTexture: !Platform.isWindows
     ); // create a new video controller
 
- 
     if (dataSource.sourceType == DataSourceType.asset) {
       player.open(
         Media.asset(dataSource.asset!),
@@ -74,17 +78,19 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
       );
     }
 
-    players[player.id]=player;
+    players[player.id] = player;
     return player.id;
   }
 
   @override
   Future<Duration> getPosition(int textureId) async {
-    return players[textureId]!.position.duration!;
+    return players[textureId]!.position.position!;
   }
 
   @override
-  Future<void> init() async {}
+  Future<void> init() async {
+    DartVLC.initialize();
+  }
 
   @override
   Future<void> pause(int textureId) async {
@@ -114,6 +120,14 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
 
   @override
   Future<void> dispose(int textureId) async {
+    // print("disposed player $textureId");
+    // players[textureId]!.playbackStream.listen((element) {
+    //   print("is playing ${element.isPlaying}");
+    // });
+    // await players[textureId]!
+    //     .playbackStream
+    //     .firstWhere((event) => !event.isPlaying);
+    pause(textureId);
     players[textureId]!.dispose();
     players.remove(textureId);
     return;
@@ -132,15 +146,43 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         eventType: VideoEventType.unknown,
       );
     });
-    Stream<VideoEvent> initialized =
-        players[textureId]!.videoDimensionsStream.map((event) {
-      return VideoEvent(
-        eventType: VideoEventType.initialized,
-        duration: players[textureId]!.position.duration,
-        size: Size(event.width.toDouble(), event.height.toDouble()),
-        rotationCorrection: 0,
-      );
-    });
+    Stream<VideoEvent> initializedStream() async* {
+      await for (final event in players[textureId]!.positionStream) {
+        if (event.duration != Duration.zero) {
+          if (!durations.containsKey(textureId) ||
+              (durations[textureId] ?? 0) != event.duration!.inMicroseconds) {
+            durations[textureId] = event.duration!.inMicroseconds;
+            yield VideoEvent(
+              eventType: VideoEventType.initialized,
+              duration: event.duration,
+              size: Size(players[textureId]!.videoDimensions.width.toDouble(),
+                  players[textureId]!.videoDimensions.height.toDouble()),
+              rotationCorrection: 0,
+            );
+
+
+            yield VideoEvent(
+              buffered: [
+                (DurationRange(
+                    Duration.zero,
+                    Duration(
+                        seconds: ((100) *
+                                players[textureId]!
+                                    .position
+                                    .duration!
+                                    .inSeconds)
+                            .round())))
+              ],
+              eventType: VideoEventType.bufferingUpdate,
+            );
+          }
+        }
+        yield VideoEvent(
+          eventType: VideoEventType.unknown,
+        );
+      }
+    }
+
     Stream<VideoEvent> buffering =
         players[textureId]!.bufferingProgressStream.map((event) {
       if (event != 100) {
@@ -159,14 +201,13 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         return VideoEvent(eventType: VideoEventType.bufferingEnd);
       }
     });
-    return isCompleted.mergeAll([initialized, buffering]);
+
+    return isCompleted.mergeAll([initializedStream(), buffering]);
   }
 
+  /// setLooping (ignored)
   @override
-  Future<void> setLooping(int textureId, bool looping) {
-    // TODO: implement setLooping
-    throw UnimplementedError();
-  }
+  Future<void> setLooping(int textureId, bool looping) => Future<void>.value();
 
   /// Sets the audio mode to mix with other sources (ignored)
   @override

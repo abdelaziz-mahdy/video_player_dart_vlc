@@ -1,3 +1,5 @@
+## 0.1.0
+* fixed multiple bugs 
 ## 0.0.4
 * converted to player id
 ## 0.0.3
