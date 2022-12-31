@@ -1,3 +1,6 @@
+## 0.1.2
+* improved clearing old players
+
 ## 0.1.1
 * fixed file playing
 

@@ -15,7 +15,15 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
     VideoPlayerPlatform.instance = VideoPlayerDartVlc();
+
     return;
+  }
+
+  void _disposeAllPlayers() {
+    for (final int videoPlayerId in players.keys) {
+      dispose(videoPlayerId);
+    }
+    players.clear();
   }
 
   @override
@@ -89,6 +97,8 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
 
   @override
   Future<void> init() async {
+    _disposeAllPlayers();
+
     DartVLC.initialize();
   }
 
@@ -159,7 +169,6 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
                   players[textureId]!.videoDimensions.height.toDouble()),
               rotationCorrection: 0,
             );
-
 
             yield VideoEvent(
               buffered: [
