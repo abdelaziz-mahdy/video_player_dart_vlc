@@ -1,3 +1,6 @@
+## 0.1.1
+* fixed file playing
+
 ## 0.1.0
 * fixed multiple bugs 
 ## 0.0.4

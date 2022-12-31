@@ -67,12 +67,12 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
         ),
       );
     } else {
-      if (!await File(dataSource.uri!).exists()) {
+      if (!await File.fromUri(Uri.parse(dataSource.uri!)).exists()) {
         throw Exception("${dataSource.uri!} not found ");
       }
       player.open(
         Media.file(
-          File(dataSource.uri!),
+          File.fromUri(Uri.parse(dataSource.uri!)),
           //startTime: seekTo
         ),
       );
