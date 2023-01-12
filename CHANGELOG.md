@@ -1,3 +1,5 @@
+## 0.1.3
+* removed defined width and height properties for player widget
 ## 0.1.2
 * improved clearing old players
 

@@ -31,9 +31,9 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
     return Video(
       player: players[textureId],
 
-      height: 1920.0,
-      width: 1080.0,
-      scale: 1.0, // default
+      // height: 1920.0,
+      // width: 1080.0,
+      // scale: 1.0, // default
       showControls: false,
     );
   }
