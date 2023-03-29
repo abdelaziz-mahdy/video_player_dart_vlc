@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
@@ -51,7 +50,7 @@ class VideoPlayerDartVlc extends VideoPlayerPlatform {
       id: counter,
       commandlineArguments: [
         //"-vvv",
-        '--http-referrer=' + refer,
+        '--http-referrer=$refer',
         '--http-reconnect',
         '--sout-livehttp-caching',
         '--network-caching=60000',
