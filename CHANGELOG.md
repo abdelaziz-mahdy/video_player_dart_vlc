@@ -1,3 +1,6 @@
+## 0.1.6
+* updated readme
+* fixed pub points
 ## 0.1.5
 * Updated License
 ## 0.1.4
