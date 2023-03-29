@@ -8,7 +8,7 @@ To use Video Player Dart VLC in your application, follow the steps below:
 
 ```
 dependencies:
-  video_player_dart_vlc: ^0.1.4
+  video_player_dart_vlc: ^0.1.5
 ```
 1. Import the package in your Dart code
 ```

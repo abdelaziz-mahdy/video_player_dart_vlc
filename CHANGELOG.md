@@ -1,3 +1,5 @@
+## 0.1.5
+* Updated License
 ## 0.1.4
 * updated readme
 ## 0.1.3
